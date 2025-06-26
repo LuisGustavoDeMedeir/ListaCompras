@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> Compras</title>
+    <style>
+        :root {
+            --cor-primaria: #a78bfa;
+            /* Roxo claro */
+            --cor-secundaria: #60a5fa;
+            /* Azul bebê */
+            --fundo: #f4f0ff;
+            /* Fundo lilás bem claro */
+            --texto: #2e2e2e;
+            --branco: #ffffff;
+            --sombra: 0 4px 12px rgba(160, 140, 255, 0.2);
+            --borda: 12px;
+        }
+    
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+    
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--fundo);
+            color: var(--texto);
+            padding: 20px;
+        }
+    
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: var(--branco);
+            padding: 30px;
+            border-radius: var(--borda);
+            box-shadow: var(--sombra);
+            transition: transform 0.3s;
+        }
+    
+        .container:hover {
+            transform: scale(1.01);
+        }
+    
+        h1 {
+            text-align: center;
+            color: var(--cor-primaria);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+    
+        form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+    
+        input[type="text"],
+        select {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #d4d4d8;
+            border-radius: var(--borda);
+            background-color: #fafafa;
+            transition: border-color 0.3s;
+        }
+    
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--cor-primaria);
+        }
+    
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--borda);
+            background-color: var(--cor-primaria);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+    
+        button:hover {
+            background-color: #f65c71;
+            transform: scale(1.05);
+        }
+    
+        ul {
+            list-style: none;
+        }
+    
+        li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #e0e7ff;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: var(--borda);
+            font-size: 1rem;
+        }
+    
+        .remover {
+            background-color: var(--cor-secundaria);
+            padding: 6px 12px;
+            border-radius: var(--borda);
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+    
+        .remover:hover {
+            background-color: #3b82f6;
+            transform: scale(1.05);
+        }
+    
+        #limpar-tudo {
+            background-color: #48ec50;
+            /* Rosa vibrante para contraste */
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: var(--borda);
+            font-weight: bold;
+        }
+    
+        #limpar-tudo:hover {
+            background-color: #36db27;
+        }
+    
+        </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Compras</h1>
+
+        <!-- Formulário para adicionar item -->
+        <form id="formulario">
+            <input type="text" id="nome" placeholder="Nome do produto" required />
+            <select id="quantidade" required>
+                <option value="" disabled selected>Listas </option>
+                <option value="1">CASA</option>
+                <option value="2">TRABALHO</option>
+            </select>
+            <button type="submit">Adicionar</button>
+        </form>
+
+        <!-- Lista de compras -->
+        <ul id="lista">
+            <!-- Itens adicionados aparecem aqui -->
+        </ul>
+
+        <!-- Botão de limpar tudo -->
+        <button id="limpar-tudo">Limpar Tudo</button>
+    </div>
+
+    <script>
+        const form = document.getElementById('formulario');
+        const nomeInput = document.getElementById('nome');
+        const quantidadeInput = document.getElementById('quantidade');
+        const lista = document.getElementById('lista');
+        const btnLimparTudo = document.getElementById('limpar-tudo');
+
+        function adicionarItem(nome, quantidade) {
+            const li = document.createElement('li');
+            li.innerHTML = `
+        ${nome} - ${quantidade}x
+        <button class="remover">Remover</button>
+      `;
+
+            li.querySelector('.remover').addEventListener('click', () => {
+                li.remove();
+            });
+
+            lista.appendChild(li);
+        }
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const nome = nomeInput.value.trim();
+            const quantidade = quantidadeInput.value;
+
+            if (nome && quantidade) {
+                adicionarItem(nome, quantidade);
+                form.reset();
+            }
+        });
+
+        btnLimparTudo.addEventListener('click', function () {
+            if (confirm("Tem certeza que deseja limpar a lista inteira?")) {
+                lista.innerHTML = '';
+            }
+        });
+    </script>
+</body>
+
+</html
