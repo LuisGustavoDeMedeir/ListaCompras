@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title> Compras</title>
+    <title>Compras</title>
+
     <style>
+        /** Variáveis de cor, sombra e borda para usar no design */
         :root {
             --cor-primaria: #a78bfa;
-            /* Roxo claro */
             --cor-secundaria: #60a5fa;
-            /* Azul bebê */
             --fundo: #f4f0ff;
-            /* Fundo lilás bem claro */
             --texto: #2e2e2e;
             --branco: #ffffff;
             --sombra: 0 4px 12px rgba(160, 140, 255, 0.2);
             --borda: 12px;
         }
-    
+
+        /** Reset de margens e padding padrão */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-    
+
+        /** Estilização do corpo da página */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--fundo);
             color: var(--texto);
             padding: 20px;
         }
-    
+
+        /** Estilização da área principal */
         .container {
             max-width: 600px;
             margin: auto;
@@ -41,24 +42,27 @@
             box-shadow: var(--sombra);
             transition: transform 0.3s;
         }
-    
+
         .container:hover {
             transform: scale(1.01);
         }
-    
+
+        /** Título principal */
         h1 {
             text-align: center;
             color: var(--cor-primaria);
             margin-bottom: 20px;
             font-size: 2rem;
         }
-    
+
+        /** Estilo do formulário */
         form {
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
         }
-    
+
+        /** Estilo dos campos do formulário */
         input[type="text"],
         select {
             flex: 1;
@@ -68,13 +72,15 @@
             background-color: #fafafa;
             transition: border-color 0.3s;
         }
-    
+
+        /** Efeito ao focar nos campos */
         input[type="text"]:focus,
         select:focus {
             outline: none;
             border-color: var(--cor-primaria);
         }
-    
+
+        /** Estilo geral dos botões */
         button {
             padding: 10px 20px;
             border: none;
@@ -84,16 +90,17 @@
             cursor: pointer;
             transition: background 0.3s ease, transform 0.2s ease;
         }
-    
+
         button:hover {
             background-color: #f65c71;
             transform: scale(1.05);
         }
-    
+
+        /** Estilo da lista e dos itens */
         ul {
             list-style: none;
         }
-    
+
         li {
             display: flex;
             justify-content: space-between;
@@ -104,7 +111,8 @@
             border-radius: var(--borda);
             font-size: 1rem;
         }
-    
+
+        /** Botão para remover item */
         .remover {
             background-color: var(--cor-secundaria);
             padding: 6px 12px;
@@ -113,34 +121,33 @@
             cursor: pointer;
             transition: background 0.3s ease, transform 0.2s ease;
         }
-    
+
         .remover:hover {
             background-color: #3b82f6;
             transform: scale(1.05);
         }
-    
+
+        /** Botão para limpar todos os itens */
         #limpar-tudo {
             background-color: #48ec50;
-            /* Rosa vibrante para contraste */
             width: 100%;
             margin-top: 10px;
             padding: 12px;
             border-radius: var(--borda);
             font-weight: bold;
         }
-    
+
         #limpar-tudo:hover {
             background-color: #36db27;
         }
-    
-        </style>
+    </style>
 </head>
 
 <body>
     <div class="container">
         <h1>Compras</h1>
 
-        <!-- Formulário para adicionar item -->
+        <!-- Formulário para adicionar item à lista -->
         <form id="formulario">
             <input type="text" id="nome" placeholder="Nome do produto" required />
             <select id="quantidade" required>
@@ -151,29 +158,32 @@
             <button type="submit">Adicionar</button>
         </form>
 
-        <!-- Lista de compras -->
+        <!-- Lista onde os itens aparecerão -->
         <ul id="lista">
-            <!-- Itens adicionados aparecem aqui -->
+            <!-- Itens serão adicionados aqui via JavaScript -->
         </ul>
 
-        <!-- Botão de limpar tudo -->
+        <!-- Botão para limpar todos os itens da lista -->
         <button id="limpar-tudo">Limpar Tudo</button>
     </div>
 
     <script>
+        /** Seleciona os elementos necessários */
         const form = document.getElementById('formulario');
         const nomeInput = document.getElementById('nome');
         const quantidadeInput = document.getElementById('quantidade');
         const lista = document.getElementById('lista');
         const btnLimparTudo = document.getElementById('limpar-tudo');
 
+        /** Função que adiciona item à lista */
         function adicionarItem(nome, quantidade) {
             const li = document.createElement('li');
             li.innerHTML = `
-        ${nome} - ${quantidade}x
-        <button class="remover">Remover</button>
-      `;
+                ${nome} - ${quantidade}x
+                <button class="remover">Remover</button>
+            `;
 
+            /** Evento para remover item individualmente */
             li.querySelector('.remover').addEventListener('click', () => {
                 li.remove();
             });
@@ -181,24 +191,26 @@
             lista.appendChild(li);
         }
 
+        /** Evento ao enviar o formulário */
         form.addEventListener('submit', function (e) {
             e.preventDefault();
 
             const nome = nomeInput.value.trim();
             const quantidade = quantidadeInput.value;
 
+            /** Verifica se os campos estão preenchidos */
             if (nome && quantidade) {
                 adicionarItem(nome, quantidade);
-                form.reset();
+                form.reset(); // Limpa o formulário
             }
         });
 
+        /** Evento para limpar toda a lista */
         btnLimparTudo.addEventListener('click', function () {
             if (confirm("Tem certeza que deseja limpar a lista inteira?")) {
-                lista.innerHTML = '';
+                lista.innerHTML = ''; // Remove todos os itens
             }
         });
     </script>
 </body>
-
-</html
+</html>
