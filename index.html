@@ -2,188 +2,284 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Compras</title>
 
   <style>
     :root {
-      --cor-primaria: #a78bfa;
+      --cor-primaria: #7c3aed; /* Roxo intenso */
       --cor-secundaria: #60a5fa;
-      --fundo: #f4f0ff;
-      --texto: #2e2e2e;
+      --fundo: #f9fafb;
+      --texto: #1f2937; /* cinza escuro */
       --branco: #ffffff;
-      --sombra: 0 4px 12px rgba(160, 140, 255, 0.2);
-      --borda: 12px;
+      --sombra: 0 8px 24px rgba(124, 58, 237, 0.15);
+      --borda: 14px;
+      --botao-gradient: linear-gradient(45deg, #7c3aed, #8b5cf6);
+      --botao-gradient-hover: linear-gradient(45deg, #8b5cf6, #a78bfa);
+      --transition-default: 0.3s ease;
     }
 
     body.escuro {
-      --fundo: #1a1a1a;
-      --texto: #f1f1f1;
-      --branco: #2b2b2b;
-      --sombra: 0 4px 12px rgba(0, 0, 0, 0.4);
+      --fundo: #121212;
+      --texto: #e5e7eb;
+      --branco: #1f2937;
+      --sombra: 0 8px 24px rgba(124, 58, 237, 0.4);
+      --botao-gradient: linear-gradient(45deg, #6b21a8, #7c3aed);
+      --botao-gradient-hover: linear-gradient(45deg, #7c3aed, #8b5cf6);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-synthesis: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: var(--fundo);
       color: var(--texto);
-      padding: 20px;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 600px;
-      margin: auto;
-      background: var(--branco);
-      padding: 30px;
-      border-radius: var(--borda);
-      box-shadow: var(--sombra);
-      transition: transform 0.3s;
-    }
-
-    .container:hover {
-      transform: scale(1.01);
-    }
-
-    h1 {
-      text-align: center;
-      color: var(--cor-primaria);
-      margin-bottom: 20px;
-      font-size: 2rem;
+      padding: 30px 15px;
+      transition: background-color var(--transition-default), color var(--transition-default);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      line-height: 1.5;
     }
 
     #toggle-tema {
+      position: fixed;
+      top: 20px;
+      right: 20px;
       background: none;
       border: 2px solid var(--cor-primaria);
       color: var(--cor-primaria);
-      padding: 8px 16px;
+      padding: 10px 20px;
       border-radius: var(--borda);
       cursor: pointer;
-      font-weight: bold;
-      margin-bottom: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-      transition: background-color 0.3s, color 0.3s;
+      font-weight: 700;
+      font-size: 1rem;
+      z-index: 1000;
+      transition: background-color var(--transition-default), color var(--transition-default), box-shadow var(--transition-default);
+      box-shadow: 0 4px 10px rgba(124, 58, 237, 0.15);
+      user-select: none;
     }
 
     #toggle-tema:hover {
       background-color: var(--cor-primaria);
       color: var(--branco);
+      box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      background: var(--branco);
+      padding: 45px 40px;
+      border-radius: var(--borda);
+      box-shadow: var(--sombra);
+      transition: transform var(--transition-default), box-shadow var(--transition-default);
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .container:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(124, 58, 237, 0.25);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--cor-primaria);
+      font-size: 3rem;
+      letter-spacing: 2px;
+      font-weight: 900;
+      user-select: none;
+      text-shadow: 0 1px 3px rgba(124, 58, 237, 0.4);
     }
 
     form {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 18px;
+      justify-content: center;
     }
 
     input[type="text"],
     select {
       flex: 1 1 100%;
-      padding: 10px;
-      border: 1px solid #d4d4d8;
+      padding: 16px 20px;
+      border: 2px solid #e5e7eb;
       border-radius: var(--borda);
       background-color: #fafafa;
-      transition: border-color 0.3s;
+      font-size: 1.2rem;
+      color: var(--texto);
+      font-weight: 600;
+      transition: border-color var(--transition-default), box-shadow var(--transition-default);
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
+      user-select: text;
+      min-width: 0;
+    }
+
+    input[type="text"]::placeholder,
+    select {
+      color: #9ca3af;
+      font-weight: 500;
     }
 
     input[type="text"]:focus,
     select:focus {
       outline: none;
       border-color: var(--cor-primaria);
+      box-shadow: 0 0 10px var(--cor-primaria);
+      background-color: var(--branco);
     }
 
-    button {
-      padding: 10px 20px;
+    button[type="submit"] {
+      padding: 0 35px;
       border: none;
       border-radius: var(--borda);
-      background-color: var(--cor-primaria);
-      color: white;
+      background-image: var(--botao-gradient);
+      color: var(--branco);
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
+      font-weight: 700;
+      font-size: 1.25rem;
+      transition: background-image var(--transition-default), transform 0.2s ease, box-shadow var(--transition-default);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 18px rgba(124, 58, 237, 0.4);
+      user-select: none;
     }
 
-    button:hover {
-      background-color: #f65c71;
-      transform: scale(1.05);
+    button[type="submit"]:hover {
+      background-image: var(--botao-gradient-hover);
+      transform: scale(1.08);
+      box-shadow: 0 10px 28px rgba(124, 58, 237, 0.6);
     }
 
     ul {
       list-style: none;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 8px;
+      scroll-behavior: smooth;
+    }
+
+    ul::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ul::-webkit-scrollbar-thumb {
+      background-color: var(--cor-primaria);
+      border-radius: 12px;
     }
 
     li {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #e0e7ff;
-      padding: 12px;
-      margin-bottom: 10px;
+      background: #ede9fe;
+      padding: 18px 24px;
+      margin-bottom: 16px;
       border-radius: var(--borda);
-      font-size: 1rem;
-      flex-wrap: wrap;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--cor-primaria);
       cursor: default;
       user-select: none;
+      transition: background-color var(--transition-default);
+      flex-wrap: wrap;
+      gap: 10px;
+      box-shadow: 0 3px 8px rgba(124, 58, 237, 0.1);
     }
 
     body.escuro li {
-      background: #3a3a3a;
+      background: #4c1d95;
+      color: #ddd6fe;
+      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.3);
     }
 
-    /* Produto com contador é clicável */
     li .produto {
       flex: 1 1 auto;
       cursor: pointer;
       user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
     }
 
     li .contador {
-      font-weight: bold;
-      margin-left: 6px;
+      font-weight: 900;
       color: var(--cor-secundaria);
+      font-size: 1rem;
+      user-select: none;
+      white-space: nowrap;
+      background: #dbeafe;
+      border-radius: 10px;
+      padding: 4px 12px;
+      box-shadow: 0 2px 10px rgba(96, 165, 250, 0.3);
+      transition: background-color var(--transition-default);
+      min-width: 70px;
+      text-align: center;
+    }
+
+    body.escuro li .contador {
+      background: #2563eb;
+      box-shadow: 0 2px 12px rgba(37, 99, 235, 0.6);
+      color: #dbeafe;
     }
 
     .remover {
       background-color: var(--cor-secundaria);
-      padding: 6px 12px;
+      padding: 10px 18px;
       border-radius: var(--borda);
       color: white;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
-      margin-top: 5px;
+      font-weight: 700;
+      transition: background var(--transition-default), transform 0.2s ease, box-shadow var(--transition-default);
       flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(96, 165, 250, 0.45);
+      user-select: none;
+      min-width: 90px;
+      text-align: center;
     }
 
     .remover:hover {
-      background-color: #3b82f6;
-      transform: scale(1.05);
+      background-color: #2563eb;
+      transform: scale(1.1);
+      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.6);
     }
 
     #limpar-tudo {
-      background-color: #48ec50;
+      background-image: linear-gradient(45deg, #ec4899, #db2777);
       width: 100%;
-      margin-top: 10px;
-      padding: 12px;
+      margin-top: 25px;
+      padding: 18px;
       border-radius: var(--borda);
-      font-weight: bold;
+      font-weight: 900;
+      color: white;
+      font-size: 1.4rem;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      border: none;
+      box-shadow: 0 6px 22px rgba(219, 39, 119, 0.7);
+      transition: background-image var(--transition-default), box-shadow var(--transition-default), transform 0.2s ease;
+      user-select: none;
     }
 
     #limpar-tudo:hover {
-      background-color: #36db27;
+      background-image: linear-gradient(45deg, #db2777, #ec4899);
+      box-shadow: 0 8px 28px rgba(236, 72, 153, 0.85);
+      transform: scale(1.07);
     }
 
-    @media (min-width: 480px) {
+    @media (min-width: 600px) {
       form {
         flex-wrap: nowrap;
       }
@@ -191,105 +287,157 @@
       input[type="text"],
       select {
         flex: 2;
+        font-size: 1.3rem;
+        min-width: 0;
       }
 
       button[type="submit"] {
         flex: 1;
       }
     }
+
+    @media (min-width: 900px) {
+      body {
+        padding: 50px 30px;
+      }
+
+      .container {
+        max-width: 700px;
+        padding: 50px 50px 60px;
+      }
+
+      h1 {
+        font-size: 3.6rem;
+      }
+
+      #limpar-tudo {
+        font-size: 1.6rem;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <!-- Botão para alternar entre claro e escuro -->
-    <button id="toggle-tema">🌙 Modo Escuro</button>
+  <button id="toggle-tema" aria-label="Alternar tema claro/escuro" type="button">🌙 Modo Escuro</button>
 
+  <div class="container" role="main">
     <h1>Compras</h1>
 
-    <form id="formulario">
-      <input type="text" id="nome" placeholder="Nome do produto" required />
-      <select id="quantidade" required>
-        <option value="" disabled selected>Listas</option>
-        <option value="1">CASA</option>
-        <option value="2">TRABALHO</option>
+    <form id="formulario" aria-label="Adicionar item à lista de compras">
+      <input
+        type="text"
+        name="produto"
+        id="produto"
+        placeholder="Nome do produto"
+        required
+        autocomplete="off"
+        aria-required="true"
+        aria-describedby="produtoHelp"
+        aria-label="Nome do produto"
+      />
+      <select name="quantidade" id="quantidade" aria-label="Quantidade do produto" required>
+        <option value="" disabled selected>Quantidade</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
       </select>
-      <button type="submit">Adicionar</button>
+      <button type="submit" aria-label="Adicionar produto à lista">Adicionar</button>
     </form>
 
-    <ul id="lista"></ul>
+    <ul id="lista" aria-live="polite" aria-relevant="additions removals"></ul>
 
-    <button id="limpar-tudo">Limpar Tudo</button>
+    <button id="limpar-tudo" type="button" aria-label="Limpar todos os produtos da lista">Limpar tudo</button>
   </div>
 
   <script>
-    const form = document.getElementById('formulario');
-    const nomeInput = document.getElementById('nome');
-    const quantidadeInput = document.getElementById('quantidade');
-    const lista = document.getElementById('lista');
-    const btnLimparTudo = document.getElementById('limpar-tudo');
-    const btnToggleTema = document.getElementById('toggle-tema');
+    const form = document.getElementById("formulario");
+    const lista = document.getElementById("lista");
+    const limparTudo = document.getElementById("limpar-tudo");
+    const toggleTema = document.getElementById("toggle-tema");
+    const body = document.body;
 
-    function adicionarItem(nome, quantidade) {
-      const li = document.createElement('li');
-
-      li.innerHTML = `
-        <span class="produto">
-          ${nome} - ${quantidade}x - <strong class="contador">0 cliques</strong>
-        </span>
-        <button class="remover">Remover</button>
-      `;
-
-      const produto = li.querySelector('.produto');
-      const contador = li.querySelector('.contador');
-
-      let cliques = 0;
-
-      produto.addEventListener('click', () => {
-        cliques++;
-        contador.textContent = `${cliques} cliques`;
-      });
-
-      li.querySelector('.remover').addEventListener('click', () => {
-        li.remove();
-      });
-
-      lista.appendChild(li);
-    }
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const nome = nomeInput.value.trim();
-      const quantidade = quantidadeInput.value;
-
-      if (nome && quantidade) {
-        adicionarItem(nome, quantidade);
-        form.reset();
-      }
-    });
-
-    btnLimparTudo.addEventListener('click', () => {
-      if (confirm("Tem certeza que deseja limpar a lista inteira?")) {
-        lista.innerHTML = '';
-      }
-    });
-
+    // Alternar tema claro/escuro e guardar em localStorage
     function alternarTema() {
-      document.body.classList.toggle('escuro');
-      const escuroAtivo = document.body.classList.contains('escuro');
-      btnToggleTema.textContent = escuroAtivo ? '☀️ Modo Claro' : '🌙 Modo Escuro';
-      localStorage.setItem('modo', escuroAtivo ? 'escuro' : 'claro');
+      body.classList.toggle("escuro");
+      if (body.classList.contains("escuro")) {
+        toggleTema.textContent = "☀️ Modo Claro";
+        localStorage.setItem("tema", "escuro");
+      } else {
+        toggleTema.textContent = "🌙 Modo Escuro";
+        localStorage.setItem("tema", "claro");
+      }
     }
 
-    btnToggleTema.addEventListener('click', alternarTema);
+    toggleTema.addEventListener("click", alternarTema);
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const modoSalvo = localStorage.getItem('modo');
-      if (modoSalvo === 'escuro') {
-        document.body.classList.add('escuro');
-        btnToggleTema.textContent = '☀️ Modo Claro';
+    // Recupera tema do localStorage no carregamento
+    window.addEventListener("load", () => {
+      if (localStorage.getItem("tema") === "escuro") {
+        body.classList.add("escuro");
+        toggleTema.textContent = "☀️ Modo Claro";
       }
+    });
+
+    // Função para criar o item da lista
+    function criarItem(produto, quantidade) {
+      const li = document.createElement("li");
+
+      const produtoSpan = document.createElement("span");
+      produtoSpan.classList.add("produto");
+      produtoSpan.textContent = produto;
+
+      const contadorSpan = document.createElement("span");
+      contadorSpan.classList.add("contador");
+      contadorSpan.textContent = quantidade;
+
+      const removerBtn = document.createElement("button");
+      removerBtn.classList.add("remover");
+      removerBtn.textContent = "Remover";
+      removerBtn.setAttribute("aria-label", `Remover ${produto} da lista`);
+
+      removerBtn.addEventListener("click", () => {
+        lista.removeChild(li);
+      });
+
+      li.appendChild(produtoSpan);
+      li.appendChild(contadorSpan);
+      li.appendChild(removerBtn);
+
+      return li;
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const produto = form.produto.value.trim();
+      const quantidade = form.quantidade.value;
+
+      if (!produto || !quantidade) return;
+
+      // Evitar duplicatas, atualizar quantidade se existir
+      const itens = [...lista.children];
+      const itemExistente = itens.find((item) =>
+        item.querySelector(".produto").textContent.toLowerCase() === produto.toLowerCase()
+      );
+
+      if (itemExistente) {
+        const contador = itemExistente.querySelector(".contador");
+        contador.textContent = String(
+          parseInt(contador.textContent) + parseInt(quantidade)
+        );
+      } else {
+        const novoItem = criarItem(produto, quantidade);
+        lista.appendChild(novoItem);
+      }
+
+      form.reset();
+      form.produto.focus();
+    });
+
+    limparTudo.addEventListener("click", () => {
+      lista.innerHTML = "";
+      form.produto.focus();
     });
   </script>
 </body>
