@@ -6,7 +6,6 @@
   <title>Compras</title>
 
   <style>
-    /** Variáveis de cor e estilo base */
     :root {
       --cor-primaria: #a78bfa;
       --cor-secundaria: #60a5fa;
@@ -17,7 +16,13 @@
       --borda: 12px;
     }
 
-    /** Reset de estilos */
+    body.escuro {
+      --fundo: #1a1a1a;
+      --texto: #f1f1f1;
+      --branco: #2b2b2b;
+      --sombra: 0 4px 12px rgba(0, 0, 0, 0.4);
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -29,9 +34,9 @@
       background-color: var(--fundo);
       color: var(--texto);
       padding: 20px;
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    /** Container central com limite de largura */
     .container {
       width: 100%;
       max-width: 600px;
@@ -54,7 +59,26 @@
       font-size: 2rem;
     }
 
-    /** Estilo do formulário com quebra automática */
+    #toggle-tema {
+      background: none;
+      border: 2px solid var(--cor-primaria);
+      color: var(--cor-primaria);
+      padding: 8px 16px;
+      border-radius: var(--borda);
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    #toggle-tema:hover {
+      background-color: var(--cor-primaria);
+      color: var(--branco);
+    }
+
     form {
       display: flex;
       flex-wrap: wrap;
@@ -62,7 +86,6 @@
       margin-bottom: 20px;
     }
 
-    /** Campos com largura total em telas pequenas */
     input[type="text"],
     select {
       flex: 1 1 100%;
@@ -79,7 +102,6 @@
       border-color: var(--cor-primaria);
     }
 
-    /** Botões adaptáveis */
     button {
       padding: 10px 20px;
       border: none;
@@ -109,6 +131,25 @@
       border-radius: var(--borda);
       font-size: 1rem;
       flex-wrap: wrap;
+      cursor: default;
+      user-select: none;
+    }
+
+    body.escuro li {
+      background: #3a3a3a;
+    }
+
+    /* Produto com contador é clicável */
+    li .produto {
+      flex: 1 1 auto;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    li .contador {
+      font-weight: bold;
+      margin-left: 6px;
+      color: var(--cor-secundaria);
     }
 
     .remover {
@@ -119,6 +160,7 @@
       cursor: pointer;
       transition: background 0.3s ease, transform 0.2s ease;
       margin-top: 5px;
+      flex-shrink: 0;
     }
 
     .remover:hover {
@@ -133,13 +175,14 @@
       padding: 12px;
       border-radius: var(--borda);
       font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
     }
 
     #limpar-tudo:hover {
       background-color: #36db27;
     }
 
-    /** Responsividade: melhor visual em telas pequenas */
     @media (min-width: 480px) {
       form {
         flex-wrap: nowrap;
@@ -159,9 +202,11 @@
 
 <body>
   <div class="container">
+    <!-- Botão para alternar entre claro e escuro -->
+    <button id="toggle-tema">🌙 Modo Escuro</button>
+
     <h1>Compras</h1>
 
-    <!-- Formulário para adicionar item -->
     <form id="formulario">
       <input type="text" id="nome" placeholder="Nome do produto" required />
       <select id="quantidade" required>
@@ -172,28 +217,38 @@
       <button type="submit">Adicionar</button>
     </form>
 
-    <!-- Lista de compras -->
     <ul id="lista"></ul>
 
-    <!-- Botão para limpar todos -->
     <button id="limpar-tudo">Limpar Tudo</button>
   </div>
 
   <script>
-    /** Seleciona os elementos */
     const form = document.getElementById('formulario');
     const nomeInput = document.getElementById('nome');
     const quantidadeInput = document.getElementById('quantidade');
     const lista = document.getElementById('lista');
     const btnLimparTudo = document.getElementById('limpar-tudo');
+    const btnToggleTema = document.getElementById('toggle-tema');
 
-    /** Adiciona um item à lista */
     function adicionarItem(nome, quantidade) {
       const li = document.createElement('li');
+
       li.innerHTML = `
-        ${nome} - ${quantidade}x
+        <span class="produto">
+          ${nome} - ${quantidade}x - <strong class="contador">0 cliques</strong>
+        </span>
         <button class="remover">Remover</button>
       `;
+
+      const produto = li.querySelector('.produto');
+      const contador = li.querySelector('.contador');
+
+      let cliques = 0;
+
+      produto.addEventListener('click', () => {
+        cliques++;
+        contador.textContent = `${cliques} cliques`;
+      });
 
       li.querySelector('.remover').addEventListener('click', () => {
         li.remove();
@@ -202,8 +257,7 @@
       lista.appendChild(li);
     }
 
-    /** Envio do formulário */
-    form.addEventListener('submit', function (e) {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const nome = nomeInput.value.trim();
@@ -215,12 +269,29 @@
       }
     });
 
-    /** Limpa toda a lista */
-    btnLimparTudo.addEventListener('click', function () {
+    btnLimparTudo.addEventListener('click', () => {
       if (confirm("Tem certeza que deseja limpar a lista inteira?")) {
         lista.innerHTML = '';
+      }
+    });
+
+    function alternarTema() {
+      document.body.classList.toggle('escuro');
+      const escuroAtivo = document.body.classList.contains('escuro');
+      btnToggleTema.textContent = escuroAtivo ? '☀️ Modo Claro' : '🌙 Modo Escuro';
+      localStorage.setItem('modo', escuroAtivo ? 'escuro' : 'claro');
+    }
+
+    btnToggleTema.addEventListener('click', alternarTema);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const modoSalvo = localStorage.getItem('modo');
+      if (modoSalvo === 'escuro') {
+        document.body.classList.add('escuro');
+        btnToggleTema.textContent = '☀️ Modo Claro';
       }
     });
   </script>
 </body>
 </html>
+
