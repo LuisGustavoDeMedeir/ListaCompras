@@ -1,329 +1,415 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Compras</title>
-
+  <title>Lista de Compras</title>
   <style>
+    /* ========== VARIÁVEIS DE CORES ========== */
     :root {
-  --cor-primaria: #7c3aed; /* Roxo intenso */
-  --cor-secundaria: #60a5fa;
-  --fundo: #d0f0fd; /* Ciano suave */
-  --texto: #1f2937; /* cinza escuro */
-  --branco: #ffffff;
-  --sombra: 0 8px 24px rgba(124, 58, 237, 0.15);
-  --borda: 14px;
-  --botao-gradient: linear-gradient(45deg, #7c3aed, #8b5cf6);
-  --botao-gradient-hover: linear-gradient(45deg, #8b5cf6, #a78bfa);
-  --transition-default: 0.3s ease;
-}
-
-    body.escuro {
-      --fundo: #121212;
-      --texto: #e5e7eb;
-      --branco: #1f2937;
-      --sombra: 0 8px 24px rgba(124, 58, 237, 0.4);
-      --botao-gradient: linear-gradient(45deg, #6b21a8, #7c3aed);
-      --botao-gradient-hover: linear-gradient(45deg, #7c3aed, #8b5cf6);
+      --cor-primaria: #7c3aed; /* Roxo intenso */
+      --cor-secundaria: #60a5fa; /* Azul bebê */
+      --fundo-claro: #d0f0fd; /* Ciano suave */
+      --fundo-escuro: #1e1e2f;
+      --texto-claro: #1f2937;
+      --texto-escuro: #e0e0f0;
+      --branco: #ffffff;
+      --sombra: 0 8px 24px rgba(124, 58, 237, 0.15);
+      --borda: 14px;
+      --botao-gradient: linear-gradient(45deg, #7c3aed, #8b5cf6);
+      --botao-gradient-hover: linear-gradient(45deg, #8b5cf6, #a78bfa);
+      --transition-default: 0.3s ease;
+      --font-family: 'Poppins', sans-serif;
     }
 
+    /* ========== RESET BÁSICO ========== */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-synthesis: none;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      font-family: var(--font-family);
     }
 
     body {
-      font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--fundo);
-      color: var(--texto);
-      padding: 30px 15px;
-      transition: background-color var(--transition-default), color var(--transition-default);
+      background-color: var(--fundo-claro);
+      color: var(--texto-claro);
+      padding: 20px;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      line-height: 1.5;
+      transition: background-color 0.4s ease, color 0.4s ease;
     }
 
+    body.escuro {
+      background-color: var(--fundo-escuro);
+      color: var(--texto-escuro);
+    }
+
+    /* ========== CONTAINER PRINCIPAL ========== */
+    .container {
+      background: var(--branco);
+      padding: 30px 40px 40px;
+      border-radius: var(--borda);
+      box-shadow: var(--sombra);
+      max-width: 600px;
+      width: 100%;
+      transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    body.escuro .container {
+      background: #2a2a3c;
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.5);
+    }
+
+    /* ========== TÍTULO ========== */
+    h1 {
+      color: var(--cor-primaria);
+      text-align: center;
+      font-weight: 700;
+      font-size: 2.8rem;
+      margin-bottom: 30px;
+      letter-spacing: 1.2px;
+    }
+
+    /* ========== BOTÃO DE TROCA DE TEMA ========== */
     #toggle-tema {
       position: fixed;
       top: 20px;
       right: 20px;
-      background: none;
-      border: 2px solid var(--cor-primaria);
-      color: var(--cor-primaria);
+      background: var(--botao-gradient);
+      border: none;
+      border-radius: 30px;
       padding: 10px 20px;
-      border-radius: var(--borda);
+      color: var(--branco);
+      font-weight: 600;
       cursor: pointer;
-      font-weight: 700;
-      font-size: 1rem;
+      box-shadow: var(--sombra);
+      transition: background 0.4s ease, transform 0.3s ease;
       z-index: 1000;
-      transition: background-color var(--transition-default), color var(--transition-default), box-shadow var(--transition-default);
-      box-shadow: 0 4px 10px rgba(124, 58, 237, 0.15);
       user-select: none;
     }
 
     #toggle-tema:hover {
-      background-color: var(--cor-primaria);
-      color: var(--branco);
-      box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
+      background: var(--botao-gradient-hover);
+      transform: scale(1.05);
     }
 
-    .container {
-      width: 100%;
-      max-width: 650px;
-      background: var(--branco);
-      padding: 45px 40px;
-      border-radius: var(--borda);
-      box-shadow: var(--sombra);
-      transition: transform var(--transition-default), box-shadow var(--transition-default);
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-    }
-
-    .container:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 32px rgba(124, 58, 237, 0.25);
-    }
-
-    h1 {
-      text-align: center;
-      color: var(--cor-primaria);
-      font-size: 3rem;
-      letter-spacing: 2px;
-      font-weight: 900;
-      user-select: none;
-      text-shadow: 0 1px 3px rgba(124, 58, 237, 0.4);
-    }
-
+    /* ========== FORMULÁRIO ========== */
     form {
       display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
     }
 
-    input[type="text"],
-    select {
-      flex: 1 1 100%;
-      padding: 16px 20px;
-      border: 2px solid #e5e7eb;
+    form input[type="text"],
+    form select {
+      flex: 1;
+      padding: 14px 18px;
+      font-size: 1.1rem;
       border-radius: var(--borda);
+      border: 1.5px solid #d4d4d8;
       background-color: #fafafa;
-      font-size: 1.2rem;
-      color: var(--texto);
-      font-weight: 600;
-      transition: border-color var(--transition-default), box-shadow var(--transition-default);
-      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05);
-      user-select: text;
-      min-width: 0;
+      transition: border-color 0.3s ease;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+      color: var(--texto-claro);
     }
 
-    input[type="text"]::placeholder,
-    select {
-      color: #9ca3af;
-      font-weight: 500;
+    body.escuro form input[type="text"],
+    body.escuro form select {
+      background-color: #3b3b5a;
+      border-color: #5a5a8c;
+      color: var(--texto-escuro);
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
     }
 
-    input[type="text"]:focus,
-    select:focus {
+    form input[type="text"]:focus,
+    form select:focus {
       outline: none;
       border-color: var(--cor-primaria);
-      box-shadow: 0 0 10px var(--cor-primaria);
-      background-color: var(--branco);
+      box-shadow: 0 0 8px var(--cor-primaria);
     }
 
-    button[type="submit"] {
-      padding: 0 35px;
+    /* ========== BOTÃO ADICIONAR ========== */
+    form button[type="submit"] {
+      background: var(--botao-gradient);
       border: none;
       border-radius: var(--borda);
-      background-image: var(--botao-gradient);
       color: var(--branco);
-      cursor: pointer;
       font-weight: 700;
-      font-size: 1.25rem;
-      transition: background-image var(--transition-default), transform 0.2s ease, box-shadow var(--transition-default);
+      padding: 14px 28px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: var(--sombra);
+      transition: background 0.4s ease, transform 0.3s ease;
+      user-select: none;
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 6px 18px rgba(124, 58, 237, 0.4);
-      user-select: none;
     }
 
-    button[type="submit"]:hover {
-      background-image: var(--botao-gradient-hover);
-      transform: scale(1.08);
-      box-shadow: 0 10px 28px rgba(124, 58, 237, 0.6);
+    form button[type="submit"]:hover {
+      background: var(--botao-gradient-hover);
+      transform: scale(1.05);
     }
 
-    ul {
+    /* ========== LISTA ========== */
+    ul#lista {
       list-style: none;
-      max-height: 400px;
+      max-height: 350px;
       overflow-y: auto;
-      padding-right: 8px;
-      scroll-behavior: smooth;
+      padding-right: 10px;
     }
 
-    ul::-webkit-scrollbar {
+    ul#lista::-webkit-scrollbar {
       width: 8px;
     }
 
-    ul::-webkit-scrollbar-thumb {
-      background-color: var(--cor-primaria);
-      border-radius: 12px;
+    ul#lista::-webkit-scrollbar-track {
+      background: transparent;
     }
 
-    li {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #ede9fe;
-      padding: 18px 24px;
-      margin-bottom: 16px;
+    ul#lista::-webkit-scrollbar-thumb {
+      background: var(--cor-primaria);
+      border-radius: 10px;
+    }
+
+    ul#lista li {
+      background: #e0e7ff;
       border-radius: var(--borda);
-      font-size: 1.2rem;
+      padding: 14px 20px;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 1.1rem;
+      font-weight: 600;
+      box-shadow: 0 2px 6px rgba(124, 58, 237, 0.1);
+      color: var(--texto-claro);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.escuro ul#lista li {
+      background: #3b3b5a;
+      color: var(--texto-escuro);
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.4);
+    }
+
+    ul#lista li .produto {
+      flex: 1 1 auto;
+      user-select: none;
+    }
+
+    ul#lista li .contador {
+      margin: 0 15px;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--cor-primaria);
-      cursor: default;
       user-select: none;
-      transition: background-color var(--transition-default);
-      flex-wrap: wrap;
-      gap: 10px;
-      box-shadow: 0 3px 8px rgba(124, 58, 237, 0.1);
-    }
-
-    body.escuro li {
-      background: #4c1d95;
-      color: #ddd6fe;
-      box-shadow: 0 3px 10px rgba(124, 58, 237, 0.3);
-    }
-
-    li .produto {
-      flex: 1 1 auto;
-      cursor: pointer;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      min-width: 0;
-    }
-
-    li .contador {
-      font-weight: 900;
-      color: var(--cor-secundaria);
-      font-size: 1rem;
-      user-select: none;
-      white-space: nowrap;
-      background: #dbeafe;
-      border-radius: 10px;
-      padding: 4px 12px;
-      box-shadow: 0 2px 10px rgba(96, 165, 250, 0.3);
-      transition: background-color var(--transition-default);
-      min-width: 70px;
+      min-width: 36px;
       text-align: center;
     }
 
-    body.escuro li .contador {
-      background: #2563eb;
-      box-shadow: 0 2px 12px rgba(37, 99, 235, 0.6);
-      color: #dbeafe;
-    }
-
-    .remover {
+    ul#lista li button.remover {
       background-color: var(--cor-secundaria);
-      padding: 10px 18px;
+      border: none;
+      padding: 8px 16px;
       border-radius: var(--borda);
-      color: white;
+      color: var(--branco);
       cursor: pointer;
       font-weight: 700;
-      transition: background var(--transition-default), transform 0.2s ease, box-shadow var(--transition-default);
-      flex-shrink: 0;
-      box-shadow: 0 4px 14px rgba(96, 165, 250, 0.45);
+      box-shadow: var(--sombra);
+      transition: background-color 0.3s ease, transform 0.3s ease;
       user-select: none;
-      min-width: 90px;
-      text-align: center;
     }
 
-    .remover:hover {
-      background-color: #2563eb;
-      transform: scale(1.1);
-      box-shadow: 0 6px 18px rgba(37, 99, 235, 0.6);
+    ul#lista li button.remover:hover {
+      background-color: #3b82f6;
+      transform: scale(1.05);
     }
 
+    body.escuro ul#lista li button.remover {
+      background-color: #4f71ff;
+    }
+
+    /* ========== BOTÃO LIMPAR TUDO ========== */
     #limpar-tudo {
-      background-image: linear-gradient(45deg, #ec4899, #db2777);
       width: 100%;
-      margin-top: 25px;
-      padding: 18px;
+      background: #48ec50;
+      color: var(--branco);
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 16px 0;
       border-radius: var(--borda);
-      font-weight: 900;
-      color: white;
-      font-size: 1.4rem;
-      cursor: pointer;
       border: none;
-      box-shadow: 0 6px 22px rgba(219, 39, 119, 0.7);
-      transition: background-image var(--transition-default), box-shadow var(--transition-default), transform 0.2s ease;
+      cursor: pointer;
+      box-shadow: var(--sombra);
+      transition: background-color 0.3s ease, transform 0.3s ease;
       user-select: none;
+      margin-top: 20px;
     }
 
     #limpar-tudo:hover {
-      background-image: linear-gradient(45deg, #db2777, #ec4899);
-      box-shadow: 0 8px 28px rgba(236, 72, 153, 0.85);
-      transform: scale(1.07);
+      background-color: #36db27;
+      transform: scale(1.05);
     }
 
-    @media (min-width: 600px) {
-      form {
-        flex-wrap: nowrap;
-      }
-
-      input[type="text"],
-      select {
-        flex: 2;
-        font-size: 1.3rem;
-        min-width: 0;
-      }
-
-      button[type="submit"] {
-        flex: 1;
-      }
-    }
-
-    @media (min-width: 900px) {
-      body {
-        padding: 50px 30px;
-      }
-
+    /* ========== RESPONSIVIDADE ========== */
+    @media (max-width: 600px) {
       .container {
-        max-width: 700px;
-        padding: 50px 50px 60px;
+        padding: 25px 20px 30px;
       }
 
       h1 {
-        font-size: 3.6rem;
+        font-size: 2.2rem;
       }
 
-      #limpar-tudo {
-        font-size: 1.6rem;
+      form {
+        flex-direction: column;
+      }
+
+      form input[type="text"],
+      form select,
+      form button[type="submit"] {
+        width: 100%;
+      }
+
+      form button[type="submit"] {
+        padding: 16px 0;
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding: 15px 10px;
+      }
+
+      .container {
+        padding: 20px 15px 25px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      form button[type="submit"] {
+        font-size: 1.1rem;
+        padding: 14px 0;
       }
     }
   </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("formulario");
+      const lista = document.getElementById("lista");
+      const limparTudo = document.getElementById("limpar-tudo");
+      const toggleTema = document.getElementById("toggle-tema");
+      const body = document.body;
+
+      // Alternar tema claro/escuro e guardar em localStorage
+      function alternarTema() {
+        body.classList.toggle("escuro");
+        if (body.classList.contains("escuro")) {
+          toggleTema.textContent = "☀️ Modo Claro";
+          localStorage.setItem("tema", "escuro");
+        } else {
+          toggleTema.textContent = "🌙 Modo Escuro";
+          localStorage.setItem("tema", "claro");
+        }
+      }
+
+      toggleTema.addEventListener("click", alternarTema);
+
+      // Recupera tema do localStorage no carregamento
+      if (localStorage.getItem("tema") === "escuro") {
+        body.classList.add("escuro");
+        toggleTema.textContent = "☀️ Modo Claro";
+      }
+
+      // Função para criar o item da lista
+      function criarItem(produto, quantidade) {
+        const li = document.createElement("li");
+
+        const produtoSpan = document.createElement("span");
+        produtoSpan.classList.add("produto");
+        produtoSpan.textContent = produto;
+
+        const contadorSpan = document.createElement("span");
+        contadorSpan.classList.add("contador");
+        contadorSpan.textContent = quantidade;
+
+        const removerBtn = document.createElement("button");
+        removerBtn.classList.add("remover");
+        removerBtn.textContent = "Remover";
+        removerBtn.setAttribute("aria-label", `Remover ${produto} da lista`);
+
+        removerBtn.addEventListener("click", () => {
+          lista.removeChild(li);
+        });
+
+        li.appendChild(produtoSpan);
+        li.appendChild(contadorSpan);
+        li.appendChild(removerBtn);
+
+        return li;
+      }
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const produto = form.produto.value.trim();
+        const quantidade = form.quantidade.value;
+
+        if (!produto || !quantidade) return;
+
+        // Evitar duplicatas, atualizar quantidade se existir
+        const itens = [...lista.children];
+        const itemExistente = itens.find(
+          (item) =>
+            item.querySelector(".produto").textContent.toLowerCase() ===
+            produto.toLowerCase()
+        );
+
+        if (itemExistente) {
+          const contador = itemExistente.querySelector(".contador");
+          contador.textContent = String(
+            parseInt(contador.textContent) + parseInt(quantidade)
+          );
+        } else {
+          const novoItem = criarItem(produto, quantidade);
+          lista.appendChild(novoItem);
+        }
+
+        form.reset();
+        form.produto.focus();
+      });
+
+      limparTudo.addEventListener("click", () => {
+        if (lista.children.length === 0) return;
+        if (
+          confirm(
+            "Tem certeza que deseja limpar toda a lista de produtos?"
+          )
+        ) {
+          lista.innerHTML = "";
+          form.produto.focus();
+        }
+      });
+    });
+  </script>
 </head>
 
 <body>
-  <button id="toggle-tema" aria-label="Alternar tema claro/escuro" type="button">🌙 Modo Escuro</button>
+  <button id="toggle-tema" aria-label="Alternar tema claro e escuro">
+    🌙 Modo Escuro
+  </button>
 
-  <div class="container" role="main">
-    <h1>Compras</h1>
+  <div class="container" role="main" aria-labelledby="titulo">
+    <h1 id="titulo">Lista de Compras</h1>
 
-    <form id="formulario" aria-label="Adicionar item à lista de compras">
+    <form id="formulario" aria-label="Formulário para adicionar produtos à lista">
       <input
         type="text"
         name="produto"
@@ -332,114 +418,39 @@
         required
         autocomplete="off"
         aria-required="true"
-        aria-describedby="produtoHelp"
         aria-label="Nome do produto"
       />
-      <select name="quantidade" id="quantidade" aria-label="Quantidade do produto" required>
-        <option value="" disabled selected>Quantidade</option>
+      <select
+        name="quantidade"
+        id="quantidade"
+        aria-label="Quantidade do produto"
+        required
+      >
+        <option value="" disabled selected>
+          Quantidade
+        </option>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
         <option value="4">4</option>
         <option value="5">5</option>
       </select>
-      <button type="submit" aria-label="Adicionar produto à lista">Adicionar</button>
+      <button type="submit" aria-label="Adicionar produto à lista">
+        Adicionar
+      </button>
     </form>
 
-    <ul id="lista" aria-live="polite" aria-relevant="additions removals"></ul>
+    <ul
+      id="lista"
+      aria-live="polite"
+      aria-relevant="additions removals"
+      tabindex="0"
+    ></ul>
 
-    <button id="limpar-tudo" type="button" aria-label="Limpar todos os produtos da lista">Limpar tudo</button>
+    <button id="limpar-tudo" type="button" aria-label="Limpar todos os produtos da lista">
+      Limpar tudo
+    </button>
   </div>
-
-  <script>
-    const form = document.getElementById("formulario");
-    const lista = document.getElementById("lista");
-    const limparTudo = document.getElementById("limpar-tudo");
-    const toggleTema = document.getElementById("toggle-tema");
-    const body = document.body;
-
-    // Alternar tema claro/escuro e guardar em localStorage
-    function alternarTema() {
-      body.classList.toggle("escuro");
-      if (body.classList.contains("escuro")) {
-        toggleTema.textContent = "☀️ Modo Claro";
-        localStorage.setItem("tema", "escuro");
-      } else {
-        toggleTema.textContent = "🌙 Modo Escuro";
-        localStorage.setItem("tema", "claro");
-      }
-    }
-
-    toggleTema.addEventListener("click", alternarTema);
-
-    // Recupera tema do localStorage no carregamento
-    window.addEventListener("load", () => {
-      if (localStorage.getItem("tema") === "escuro") {
-        body.classList.add("escuro");
-        toggleTema.textContent = "☀️ Modo Claro";
-      }
-    });
-
-    // Função para criar o item da lista
-    function criarItem(produto, quantidade) {
-      const li = document.createElement("li");
-
-      const produtoSpan = document.createElement("span");
-      produtoSpan.classList.add("produto");
-      produtoSpan.textContent = produto;
-
-      const contadorSpan = document.createElement("span");
-      contadorSpan.classList.add("contador");
-      contadorSpan.textContent = quantidade;
-
-      const removerBtn = document.createElement("button");
-      removerBtn.classList.add("remover");
-      removerBtn.textContent = "Remover";
-      removerBtn.setAttribute("aria-label", `Remover ${produto} da lista`);
-
-      removerBtn.addEventListener("click", () => {
-        lista.removeChild(li);
-      });
-
-      li.appendChild(produtoSpan);
-      li.appendChild(contadorSpan);
-      li.appendChild(removerBtn);
-
-      return li;
-    }
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const produto = form.produto.value.trim();
-      const quantidade = form.quantidade.value;
-
-      if (!produto || !quantidade) return;
-
-      // Evitar duplicatas, atualizar quantidade se existir
-      const itens = [...lista.children];
-      const itemExistente = itens.find((item) =>
-        item.querySelector(".produto").textContent.toLowerCase() === produto.toLowerCase()
-      );
-
-      if (itemExistente) {
-        const contador = itemExistente.querySelector(".contador");
-        contador.textContent = String(
-          parseInt(contador.textContent) + parseInt(quantidade)
-        );
-      } else {
-        const novoItem = criarItem(produto, quantidade);
-        lista.appendChild(novoItem);
-      }
-
-      form.reset();
-      form.produto.focus();
-    });
-
-    limparTudo.addEventListener("click", () => {
-      lista.innerHTML = "";
-      form.produto.focus();
-    });
-  </script>
 </body>
-</html>
 
+</html>
