@@ -1,216 +1,226 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Compras</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Compras</title>
 
-    <style>
-        /** Variáveis de cor, sombra e borda para usar no design */
-        :root {
-            --cor-primaria: #a78bfa;
-            --cor-secundaria: #60a5fa;
-            --fundo: #f4f0ff;
-            --texto: #2e2e2e;
-            --branco: #ffffff;
-            --sombra: 0 4px 12px rgba(160, 140, 255, 0.2);
-            --borda: 12px;
-        }
+  <style>
+    /** Variáveis de cor e estilo base */
+    :root {
+      --cor-primaria: #a78bfa;
+      --cor-secundaria: #60a5fa;
+      --fundo: #f4f0ff;
+      --texto: #2e2e2e;
+      --branco: #ffffff;
+      --sombra: 0 4px 12px rgba(160, 140, 255, 0.2);
+      --borda: 12px;
+    }
 
-        /** Reset de margens e padding padrão */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+    /** Reset de estilos */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        /** Estilização do corpo da página */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--fundo);
-            color: var(--texto);
-            padding: 20px;
-        }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--fundo);
+      color: var(--texto);
+      padding: 20px;
+    }
 
-        /** Estilização da área principal */
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: var(--branco);
-            padding: 30px;
-            border-radius: var(--borda);
-            box-shadow: var(--sombra);
-            transition: transform 0.3s;
-        }
+    /** Container central com limite de largura */
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+      background: var(--branco);
+      padding: 30px;
+      border-radius: var(--borda);
+      box-shadow: var(--sombra);
+      transition: transform 0.3s;
+    }
 
-        .container:hover {
-            transform: scale(1.01);
-        }
+    .container:hover {
+      transform: scale(1.01);
+    }
 
-        /** Título principal */
-        h1 {
-            text-align: center;
-            color: var(--cor-primaria);
-            margin-bottom: 20px;
-            font-size: 2rem;
-        }
+    h1 {
+      text-align: center;
+      color: var(--cor-primaria);
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
 
-        /** Estilo do formulário */
-        form {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
+    /** Estilo do formulário com quebra automática */
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
 
-        /** Estilo dos campos do formulário */
-        input[type="text"],
-        select {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #d4d4d8;
-            border-radius: var(--borda);
-            background-color: #fafafa;
-            transition: border-color 0.3s;
-        }
+    /** Campos com largura total em telas pequenas */
+    input[type="text"],
+    select {
+      flex: 1 1 100%;
+      padding: 10px;
+      border: 1px solid #d4d4d8;
+      border-radius: var(--borda);
+      background-color: #fafafa;
+      transition: border-color 0.3s;
+    }
 
-        /** Efeito ao focar nos campos */
-        input[type="text"]:focus,
-        select:focus {
-            outline: none;
-            border-color: var(--cor-primaria);
-        }
+    input[type="text"]:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--cor-primaria);
+    }
 
-        /** Estilo geral dos botões */
-        button {
-            padding: 10px 20px;
-            border: none;
-            border-radius: var(--borda);
-            background-color: var(--cor-primaria);
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
+    /** Botões adaptáveis */
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: var(--borda);
+      background-color: var(--cor-primaria);
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
 
-        button:hover {
-            background-color: #f65c71;
-            transform: scale(1.05);
-        }
+    button:hover {
+      background-color: #f65c71;
+      transform: scale(1.05);
+    }
 
-        /** Estilo da lista e dos itens */
-        ul {
-            list-style: none;
-        }
+    ul {
+      list-style: none;
+    }
 
-        li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #e0e7ff;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: var(--borda);
-            font-size: 1rem;
-        }
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e0e7ff;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: var(--borda);
+      font-size: 1rem;
+      flex-wrap: wrap;
+    }
 
-        /** Botão para remover item */
-        .remover {
-            background-color: var(--cor-secundaria);
-            padding: 6px 12px;
-            border-radius: var(--borda);
-            color: white;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-        }
+    .remover {
+      background-color: var(--cor-secundaria);
+      padding: 6px 12px;
+      border-radius: var(--borda);
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease;
+      margin-top: 5px;
+    }
 
-        .remover:hover {
-            background-color: #3b82f6;
-            transform: scale(1.05);
-        }
+    .remover:hover {
+      background-color: #3b82f6;
+      transform: scale(1.05);
+    }
 
-        /** Botão para limpar todos os itens */
-        #limpar-tudo {
-            background-color: #48ec50;
-            width: 100%;
-            margin-top: 10px;
-            padding: 12px;
-            border-radius: var(--borda);
-            font-weight: bold;
-        }
+    #limpar-tudo {
+      background-color: #48ec50;
+      width: 100%;
+      margin-top: 10px;
+      padding: 12px;
+      border-radius: var(--borda);
+      font-weight: bold;
+    }
 
-        #limpar-tudo:hover {
-            background-color: #36db27;
-        }
-    </style>
+    #limpar-tudo:hover {
+      background-color: #36db27;
+    }
+
+    /** Responsividade: melhor visual em telas pequenas */
+    @media (min-width: 480px) {
+      form {
+        flex-wrap: nowrap;
+      }
+
+      input[type="text"],
+      select {
+        flex: 2;
+      }
+
+      button[type="submit"] {
+        flex: 1;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Compras</h1>
+  <div class="container">
+    <h1>Compras</h1>
 
-        <!-- Formulário para adicionar item à lista -->
-        <form id="formulario">
-            <input type="text" id="nome" placeholder="Nome do produto" required />
-            <select id="quantidade" required>
-                <option value="" disabled selected>Listas </option>
-                <option value="1">CASA</option>
-                <option value="2">TRABALHO</option>
-            </select>
-            <button type="submit">Adicionar</button>
-        </form>
+    <!-- Formulário para adicionar item -->
+    <form id="formulario">
+      <input type="text" id="nome" placeholder="Nome do produto" required />
+      <select id="quantidade" required>
+        <option value="" disabled selected>Listas</option>
+        <option value="1">CASA</option>
+        <option value="2">TRABALHO</option>
+      </select>
+      <button type="submit">Adicionar</button>
+    </form>
 
-        <!-- Lista onde os itens aparecerão -->
-        <ul id="lista">
-            <!-- Itens serão adicionados aqui via JavaScript -->
-        </ul>
+    <!-- Lista de compras -->
+    <ul id="lista"></ul>
 
-        <!-- Botão para limpar todos os itens da lista -->
-        <button id="limpar-tudo">Limpar Tudo</button>
-    </div>
+    <!-- Botão para limpar todos -->
+    <button id="limpar-tudo">Limpar Tudo</button>
+  </div>
 
-    <script>
-        /** Seleciona os elementos necessários */
-        const form = document.getElementById('formulario');
-        const nomeInput = document.getElementById('nome');
-        const quantidadeInput = document.getElementById('quantidade');
-        const lista = document.getElementById('lista');
-        const btnLimparTudo = document.getElementById('limpar-tudo');
+  <script>
+    /** Seleciona os elementos */
+    const form = document.getElementById('formulario');
+    const nomeInput = document.getElementById('nome');
+    const quantidadeInput = document.getElementById('quantidade');
+    const lista = document.getElementById('lista');
+    const btnLimparTudo = document.getElementById('limpar-tudo');
 
-        /** Função que adiciona item à lista */
-        function adicionarItem(nome, quantidade) {
-            const li = document.createElement('li');
-            li.innerHTML = `
-                ${nome} - ${quantidade}x
-                <button class="remover">Remover</button>
-            `;
+    /** Adiciona um item à lista */
+    function adicionarItem(nome, quantidade) {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        ${nome} - ${quantidade}x
+        <button class="remover">Remover</button>
+      `;
 
-            /** Evento para remover item individualmente */
-            li.querySelector('.remover').addEventListener('click', () => {
-                li.remove();
-            });
+      li.querySelector('.remover').addEventListener('click', () => {
+        li.remove();
+      });
 
-            lista.appendChild(li);
-        }
+      lista.appendChild(li);
+    }
 
-        /** Evento ao enviar o formulário */
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
+    /** Envio do formulário */
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
 
-            const nome = nomeInput.value.trim();
-            const quantidade = quantidadeInput.value;
+      const nome = nomeInput.value.trim();
+      const quantidade = quantidadeInput.value;
 
-            /** Verifica se os campos estão preenchidos */
-            if (nome && quantidade) {
-                adicionarItem(nome, quantidade);
-                form.reset(); // Limpa o formulário
-            }
-        });
+      if (nome && quantidade) {
+        adicionarItem(nome, quantidade);
+        form.reset();
+      }
+    });
 
-        /** Evento para limpar toda a lista */
-        btnLimparTudo.addEventListener('click', function () {
-            if (confirm("Tem certeza que deseja limpar a lista inteira?")) {
-                lista.innerHTML = ''; // Remove todos os itens
-            }
-        });
-    </script>
+    /** Limpa toda a lista */
+    btnLimparTudo.addEventListener('click', function () {
+      if (confirm("Tem certeza que deseja limpar a lista inteira?")) {
+        lista.innerHTML = '';
+      }
+    });
+  </script>
 </body>
 </html>
