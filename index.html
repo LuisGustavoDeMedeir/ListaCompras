@@ -1,352 +1,297 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lista de Compras</title>
-  <style>
-    /* ===== VARIÁVEIS DE CORES ===== */
-    :root {
-      --cor-primaria: #7c3aed;
-      --cor-secundaria: #60a5fa;
-      --fundo-claro: #d0f0fd;
-      --fundo-escuro: #1e1e2f;
-      --texto-claro: #1f2937;
-      --texto-escuro: #e0e0f0;
-      --branco: #ffffff;
-      --sombra: 0 8px 24px rgba(124, 58, 237, 0.15);
-      --borda: 14px;
-      --botao-gradient: linear-gradient(45deg, #7c3aed, #8b5cf6);
-      --botao-gradient-hover: linear-gradient(45deg, #8b5cf6, #a78bfa);
-      --transition-default: 0.3s ease;
-      --font-family: 'Poppins', sans-serif;
-    }
+    <!-- Configurações básicas do documento HTML -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tarefas | Comentado</title>
 
-    /* ===== RESET ===== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: var(--font-family);
-    }
+    <!-- CSS do Bootstrap 5: Framework para estilização rápida e responsiva -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- Ícones do Bootstrap: Biblioteca de ícones vetoriais para usar nos botões -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    /* ===== BODY ===== */
-    body {
-      background: linear-gradient(135deg, var(--fundo-claro) 0%, #f4f9ff 100%);
-      color: var(--texto-claro);
-      min-height: 100vh;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      transition: background-color 0.4s ease, color 0.4s ease;
-      position: relative;
-    }
-
-    body.escuro {
-      background: linear-gradient(135deg, var(--fundo-escuro) 0%, #282c44 100%);
-      color: var(--texto-escuro);
-    }
-
-    /* ===== CONTAINER ===== */
-    .container {
-      background: var(--branco);
-      padding: 40px 50px 50px;
-      border-radius: var(--borda);
-      box-shadow: var(--sombra);
-      max-width: 600px;
-      width: 100%;
-      position: relative;
-      z-index: 1;
-      transition: background-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    body.escuro .container {
-      background: #2a2a3c;
-      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.5);
-    }
-
-    /* ===== TÍTULO ===== */
-    h1 {
-      color: var(--cor-primaria);
-      text-align: center;
-      font-weight: 700;
-      font-size: 2.8rem;
-      margin-bottom: 30px;
-      letter-spacing: 1.2px;
-    }
-
-    /* ===== BOTÃO DE TROCA DE TEMA ===== */
-    #toggle-tema {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--botao-gradient);
-      border: none;
-      border-radius: 30px;
-      padding: 12px 22px;
-      color: var(--branco);
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: var(--sombra);
-      transition: background 0.4s ease, transform 0.3s ease;
-      z-index: 1000;
-      user-select: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 1rem;
-      white-space: nowrap;
-    }
-
-    #toggle-tema:hover {
-      background: var(--botao-gradient-hover);
-      transform: scale(1.05);
-    }
-
-    /* ===== FORMULÁRIO ===== */
-    form {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    form input[type="text"],
-    form select {
-      flex: 1;
-      padding: 14px 18px;
-      font-size: 1.1rem;
-      border-radius: var(--borda);
-      border: 1.5px solid #d4d4d8;
-      background-color: #fafafa;
-      transition: border-color 0.3s ease;
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
-      color: var(--texto-claro);
-    }
-
-    body.escuro form input[type="text"],
-    body.escuro form select {
-      background-color: #3b3b5a;
-      border-color: #5a5a8c;
-      color: var(--texto-escuro);
-      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
-    }
-
-    form input[type="text"]:focus,
-    form select:focus {
-      outline: none;
-      border-color: var(--cor-primaria);
-      box-shadow: 0 0 8px var(--cor-primaria);
-    }
-
-    /* ===== BOTÃO ADICIONAR ===== */
-    form button[type="submit"] {
-      background: var(--botao-gradient);
-      border: none;
-      border-radius: var(--borda);
-      color: var(--branco);
-      font-weight: 700;
-      padding: 14px 28px;
-      cursor: pointer;
-      font-size: 1.1rem;
-      box-shadow: var(--sombra);
-      transition: background 0.4s ease, transform 0.3s ease;
-      user-select: none;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    form button[type="submit"]:hover {
-      background: var(--botao-gradient-hover);
-      transform: scale(1.05);
-    }
-
-    /* ===== LISTA ===== */
-    ul#lista {
-      list-style: none;
-      max-height: 350px;
-      overflow-y: auto;
-      padding-right: 10px;
-    }
-
-    ul#lista::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    ul#lista::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    ul#lista::-webkit-scrollbar-thumb {
-      background: var(--cor-primaria);
-      border-radius: 10px;
-    }
-
-    ul#lista li {
-      background: #e0e7ff;
-      border-radius: var(--borda);
-      padding: 14px 20px;
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 1.1rem;
-      font-weight: 600;
-      box-shadow: 0 2px 6px rgba(124, 58, 237, 0.1);
-      color: var(--texto-claro);
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-
-    body.escuro ul#lista li {
-      background: #3b3b5a;
-      color: var(--texto-escuro);
-      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.4);
-    }
-
-    ul#lista li .produto {
-      flex: 1 1 auto;
-      user-select: none;
-    }
-
-    ul#lista li .contador {
-      margin: 0 15px;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--cor-primaria);
-      user-select: none;
-      min-width: 36px;
-      text-align: center;
-    }
-
-    ul#lista li button.remover {
-      background-color: var(--cor-secundaria);
-      border: none;
-      padding: 8px 16px;
-      border-radius: var(--borda);
-      color: var(--branco);
-      cursor: pointer;
-      font-weight: 700;
-      box-shadow: var(--sombra);
-      transition: background-color 0.3s ease, transform 0.3s ease;
-      user-select: none;
-    }
-
-    ul#lista li button.remover:hover {
-      background-color: #3b82f6;
-      transform: scale(1.05);
-    }
-
-    /* ===== BOTÃO LIMPAR TUDO ===== */
-    #limpar-tudo {
-      background: var(--cor-primaria);
-      color: var(--branco);
-      font-weight: 700;
-      border: none;
-      padding: 16px 0;
-      width: 100%;
-      border-radius: var(--borda);
-      cursor: pointer;
-      box-shadow: var(--sombra);
-      transition: background-color 0.3s ease, transform 0.3s ease;
-      user-select: none;
-      margin-top: 20px;
-      font-size: 1.2rem;
-      position: sticky;
-      bottom: 10px;
-      z-index: 10;
-    }
-
-    #limpar-tudo:hover {
-      background: #6d28d9;
-      transform: scale(1.03);
-    }
-
-    /* ===== RESPONSIVIDADE ===== */
-    @media (max-width: 600px) {
-      .container {
-        padding: 25px 20px 50px;
-        margin: 0 10px;
-      }
-
-      form {
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      form button[type="submit"] {
-        width: 100%;
-        padding: 14px 0;
-      }
-
-      #toggle-tema {
-        top: 12px;
-        right: 12px;
-        padding: 10px 18px;
-        font-size: 0.9rem;
-      }
-
-      ul#lista li {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        font-size: 1rem;
-      }
-
-      ul#lista li .contador {
-        margin: 0;
-      }
-
-      ul#lista li button.remover {
-        align-self: flex-end;
-      }
-    }
-  </style>
+    <!-- Estilos CSS personalizados -->
+    <style>
+        /* Estilo para tarefas que foram marcadas como concluídas */
+        .completed {
+            text-decoration: line-through; /* Adiciona um risco no texto */
+            color: #6c757d; /* Usa um cinza padrão do Bootstrap para indicar inatividade */
+        }
+        /* Um fundo suave para a página inteira */
+        body {
+            background-color: #f8f9fa; 
+        }
+        /* Limita a largura máxima do container principal para melhor legibilidade em telas grandes */
+        .container {
+            max-width: 700px;
+        }
+    </style>
 </head>
-
 <body>
-  <!-- Botão para alternar tema fixo no topo direito -->
-  <button id="toggle-tema" aria-label="Alternar tema claro e escuro">🌙 Tema Escuro</button>
 
-  <div class="container">
-    <h1>Lista de Compras</h1>
+    <!-- Container principal que centraliza o conteúdo -->
+    <div class="container mt-5">
+        <!-- Card do Bootstrap para criar uma caixa com sombra e bordas arredondadas -->
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <!-- Título da aplicação -->
+                <h1 class="card-title text-center mb-4">Minha Lista de Tarefas</h1>
 
-    <form id="form-adicionar">
-      <input type="text" id="nome-produto" placeholder="Nome do produto" aria-label="Nome do produto" required />
-      <select id="quantidade-produto" aria-label="Quantidade do produto">
-        <option value="1" selected>1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-      </select>
-      <button type="submit" aria-label="Adicionar produto à lista">Adicionar</button>
-    </form>
+                <!-- Formulário para adicionar novas tarefas -->
+                <form id="task-form" class="mb-4">
+                    <div class="input-group">
+                        <!-- Campo de texto para o usuário digitar a tarefa -->
+                        <input type="text" id="task-input" class="form-control" placeholder="O que precisa ser feito?" required>
+                        <!-- Botão para submeter o formulário e adicionar a tarefa -->
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-plus-lg"></i> Adicionar <!-- Ícone de "+" para indicar adição -->
+                        </button>
+                    </div>
+                </form>
 
-    <ul id="lista"></ul>
+                <!-- Título para a seção da lista de tarefas -->
+                <h2 class="h5">Tarefas a Fazer:</h2>
+                <!-- Lista (<ul>) onde as tarefas serão inseridas dinamicamente pelo JavaScript. A classe 'list-group' do Bootstrap formata a lista. -->
+                <ul id="task-list" class="list-group">
+                    <!-- Exemplo de como uma tarefa apareceria (será gerado pelo JS):
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Texto da tarefa</span>
+                        <div>
+                            <button class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i></button>
+                            <button class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></button>
+                        </div>
+                    </li>
+                    -->
+                </ul>
+            </div>
+        </div>
+    </div>
 
-    <button id="limpar-tudo" aria-label="Limpar toda a lista">Limpar Tudo</button>
-  </div>
+    <!-- JavaScript do Bootstrap 5 (necessário para alguns componentes, embora não seja estritamente usado aqui, é uma boa prática incluir) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
-  <script>
-    // Script para alternar tema claro e escuro
-    const btnTema = document.getElementById('toggle-tema');
-    btnTema.addEventListener('click', () => {
-      document.body.classList.toggle('escuro');
-      if (document.body.classList.contains('escuro')) {
-        btnTema.textContent = '☀️ Tema Claro';
-        btnTema.setAttribute('aria-label', 'Alternar para tema claro');
-      } else {
-        btnTema.textContent = '🌙 Tema Escuro';
-        btnTema.setAttribute('aria-label', 'Alternar para tema escuro');
-      }
-    });
+    <!-- Nosso script JavaScript principal -->
+    <script>
+        // Adiciona um "ouvinte de evento" que espera o HTML da página ser completamente carregado e analisado pelo navegador.
+        // Isso é uma boa prática para garantir que todos os elementos HTML (como 'task-form') já existam antes de tentarmos manipulá-los com o JS.
+        document.addEventListener('DOMContentLoaded', () => {
 
-    // Funções da lista - já do seu código
-    // Aqui você pode adicionar seu código JS atual para manipulação da lista...
-  </script>
+            // ===================================================================
+            // SEÇÃO 1: SELEÇÃO DOS ELEMENTOS DO DOM (A INTERFACE GRÁFICA)
+            // Guardamos referências aos elementos HTML em constantes para fácil acesso.
+            // ===================================================================
+
+            // 'taskForm': A referência ao elemento <form>. Usaremos para detectar quando o usuário envia uma nova tarefa.
+            const taskForm = document.getElementById('task-form');
+            
+            // 'taskInput': A referência ao campo <input>. Usaremos para pegar o texto da nova tarefa.
+            const taskInput = document.getElementById('task-input');
+
+            // 'taskList': A referência à lista <ul>. É aqui que vamos adicionar, remover e atualizar os itens da tarefa.
+            const taskList = document.getElementById('task-list');
+
+            // ===================================================================
+            // SEÇÃO 2: LÓGICA DE INTERAÇÃO COM O LOCAL STORAGE
+            // Funções responsáveis por salvar e carregar os dados do navegador.
+            // ===================================================================
+
+            // Função 'getTasks': Responsável por buscar as tarefas do Local Storage.
+            const getTasks = () => {
+                // Acessa o Local Storage e tenta obter o valor associado à chave 'tasks'.
+                const tasksJSON = localStorage.getItem('tasks');
+                // O Local Storage só armazena texto (string). Se encontrarmos algo, será uma string no formato JSON.
+                // Usamos um operador ternário para decidir o que retornar:
+                // Se 'tasksJSON' não for nulo (ou seja, encontramos tarefas salvas),
+                // usamos JSON.parse() para converter a string JSON de volta para um array de objetos JavaScript.
+                // Se for nulo (primeira visita do usuário ou cache limpo), retornamos um array vazio [].
+                return tasksJSON ? JSON.parse(tasksJSON) : [];
+            };
+
+            // Função 'saveTasks': Responsável por salvar o estado atual do array de tarefas no Local Storage.
+            // Recebe o array de tarefas como argumento.
+            const saveTasks = (tasksArray) => {
+                // Para armazenar um array de objetos no Local Storage, primeiro precisamos convertê-lo para uma string JSON.
+                const tasksJSON = JSON.stringify(tasksArray);
+                // Salvamos essa string JSON no Local Storage usando a chave 'tasks'.
+                localStorage.setItem('tasks', tasksJSON);
+            };
+
+            // Ao iniciar o script, chamamos 'getTasks()' para carregar as tarefas existentes.
+            // A variável 'tasks' é declarada com 'let' porque seu conteúdo (o array) será modificado ao longo do tempo (adicionar, remover, atualizar).
+            let tasks = getTasks();
+
+            // ===================================================================
+            // SEÇÃO 3: LÓGICA PRINCIPAL DA APLICAÇÃO
+            // Funções que manipulam os dados e atualizam a interface.
+            // ===================================================================
+
+            // Função 'renderTasks': Responsável por "desenhar" a lista de tarefas na tela com base no array 'tasks'.
+            const renderTasks = () => {
+                // 1. Limpa o conteúdo atual da lista (<ul>). Isso evita que as tarefas sejam duplicadas na tela a cada nova renderização.
+                taskList.innerHTML = '';
+
+                // 2. Verifica se o array de tarefas está vazio.
+                if (tasks.length === 0) {
+                    // Se estiver vazio, exibe uma mensagem amigável para o usuário.
+                    taskList.innerHTML = '<li class="list-group-item text-center text-muted">Nenhuma tarefa por aqui!</li>';
+                    // 'return' encerra a função aqui, pois não há mais nada a fazer.
+                    return;
+                }
+
+                // 3. Itera sobre cada objeto 'task' dentro do array 'tasks'.
+                tasks.forEach(task => {
+                    // Para cada tarefa, cria um novo elemento de lista <li>.
+                    const li = document.createElement('li');
+                    
+                    // Adiciona classes do Bootstrap para estilizar o item da lista.
+                    li.className = 'list-group-item d-flex justify-content-between align-items-center';
+
+                    // Armazena o ID da tarefa no próprio elemento HTML usando um atributo 'data-id'.
+                    // Isso nos permite identificar facilmente qual tarefa foi clicada mais tarde.
+                    li.dataset.id = task.id;
+
+                    // Se a tarefa estiver marcada como concluída ('completed: true'), adiciona a classe CSS 'completed'.
+                    if (task.completed) {
+                        li.classList.add('completed');
+                    }
+
+                    // Cria um elemento <span> para conter o texto da tarefa.
+                    const taskText = document.createElement('span');
+                    // Define o texto do <span> como o texto da tarefa atual.
+                    taskText.textContent = task.text;
+
+                    // Cria uma <div> para agrupar os botões de ação (concluir e deletar).
+                    const buttonsDiv = document.createElement('div');
+
+                    // Cria o botão de "concluir" ou "desfazer".
+                    const completeButton = document.createElement('button');
+                    // A classe do botão e o ícone mudam dependendo se a tarefa já está completa.
+                    completeButton.className = `btn btn-sm ${task.completed ? 'btn-secondary' : 'btn-success'} me-2`;
+                    completeButton.innerHTML = task.completed ? '<i class="bi bi-arrow-counterclockwise"></i>' : '<i class="bi bi-check-lg"></i>';
+                    // Adiciona um atributo 'data-action' para identificar a função deste botão.
+                    completeButton.dataset.action = 'complete';
+
+                    // Cria o botão de "deletar".
+                    const deleteButton = document.createElement('button');
+                    deleteButton.className = 'btn btn-danger btn-sm';
+                    deleteButton.innerHTML = '<i class="bi bi-trash"></i>';
+                    // Adiciona um atributo 'data-action' para identificar a função deste botão.
+                    deleteButton.dataset.action = 'delete';
+
+                    // Adiciona os elementos criados à estrutura do <li>.
+                    li.appendChild(taskText);       // Adiciona o texto da tarefa.
+                    buttonsDiv.appendChild(completeButton); // Adiciona o botão de concluir à div de botões.
+                    buttonsDiv.appendChild(deleteButton);   // Adiciona o botão de deletar à div de botões.
+                    li.appendChild(buttonsDiv);     // Adiciona a div de botões ao item da lista.
+
+                    // Finalmente, adiciona o item da lista (<li>) completo à lista principal na tela (<ul>).
+                    taskList.appendChild(li);
+                });
+            };
+
+            // Função 'addTask': Adiciona uma nova tarefa ao array 'tasks'.
+            const addTask = (text) => {
+                // Cria um novo objeto de tarefa com uma estrutura padronizada.
+                const newTask = {
+                    id: Date.now(), // Usa o timestamp atual como um ID único e simples.
+                    text: text,     // O texto da tarefa, vindo do input.
+                    completed: false // Novas tarefas sempre começam como não concluídas.
+                };
+                // Adiciona o novo objeto de tarefa ao final do nosso array 'tasks'.
+                tasks.push(newTask);
+                // Salva o array atualizado no Local Storage.
+                saveTasks(tasks);
+                // Re-renderiza a lista na tela para mostrar a nova tarefa.
+                renderTasks();
+            };
+            
+            // Função 'toggleComplete': Alterna o estado de 'concluído' de uma tarefa.
+            const toggleComplete = (id) => {
+                // 'map' cria um NOVO array. Para cada tarefa, ele verifica:
+                // Se o ID da tarefa é o mesmo que o ID clicado...
+                // ...retorna uma CÓPIA da tarefa ({ ...task }) com a propriedade 'completed' invertida (!task.completed).
+                // ...senão, retorna a tarefa original sem modificação.
+                tasks = tasks.map(task => 
+                    task.id === id ? { ...task, completed: !task.completed } : task
+                );
+                // Salva o novo estado do array no Local Storage.
+                saveTasks(tasks);
+                // Re-renderiza a lista para refletir a mudança visual (riscar/des-riscar).
+                renderTasks();
+            };
+
+            // Função 'deleteTask': Remove uma tarefa do array 'tasks'.
+            const deleteTask = (id) => {
+                // 'filter' cria um NOVO array contendo apenas os elementos que passam no teste.
+                // O teste aqui é: manter apenas as tarefas cujo ID seja DIFERENTE do ID que queremos deletar.
+                tasks = tasks.filter(task => task.id !== id);
+                // Salva o array (agora menor) no Local Storage.
+                saveTasks(tasks);
+                // Re-renderiza a lista, que agora não terá mais a tarefa deletada.
+                renderTasks();
+            };
+
+            // ===================================================================
+            // SEÇÃO 4: OUVINTES DE EVENTOS (EVENT LISTENERS)
+            // Código que reage às interações do usuário.
+            // ===================================================================
+
+            // Adiciona um ouvinte para o evento 'submit' do formulário.
+            taskForm.addEventListener('submit', (event) => {
+                // Impede o comportamento padrão do formulário, que é recarregar a página.
+                event.preventDefault(); 
+                
+                // Pega o valor do campo de input e usa .trim() para remover espaços em branco no início e no fim.
+                const taskText = taskInput.value.trim();
+                
+                // Se o texto não estiver vazio...
+                if (taskText !== '') {
+                    // ...chama a função para adicionar a tarefa.
+                    addTask(taskText);
+                    // ...limpa o campo de input para a próxima tarefa.
+                    taskInput.value = ''; 
+                    // ...coloca o cursor de volta no campo de input para facilitar a digitação de múltiplas tarefas.
+                    taskInput.focus();
+                }
+            });
+
+            // Adiciona um único ouvinte de clique na lista <ul> (Técnica de Delegação de Eventos).
+            // Em vez de adicionar um ouvinte para cada botão (o que é ineficiente), ouvimos o clique no pai (a lista)
+            // e depois descobrimos em qual filho o clique ocorreu.
+            taskList.addEventListener('click', (event) => {
+                // 'event.target' é o elemento exato que foi clicado (pode ser o ícone <i> ou o botão <button>).
+                // '.closest('button')' sobe na árvore DOM a partir do alvo e encontra o ancestral <button> mais próximo.
+                // Se o clique não foi em um botão ou dentro de um, 'target' será nulo.
+                const targetButton = event.target.closest('button');
+
+                // Se não encontrou um botão, encerra a função.
+                if (!targetButton) return;
+
+                // Pega o elemento <li> pai do botão que foi clicado.
+                const li = targetButton.closest('li');
+                // Lê o ID da tarefa que armazenamos no atributo 'data-id' e o converte para número.
+                const taskId = Number(li.dataset.id);
+                // Lê a ação que armazenamos no atributo 'data-action' do botão.
+                const action = targetButton.dataset.action;
+
+                // Com base na ação, chama a função correspondente.
+                if (action === 'delete') {
+                    deleteTask(taskId);
+                } else if (action === 'complete') {
+                    toggleComplete(taskId);
+                }
+            });
+
+            // ===================================================================
+            // SEÇÃO 5: EXECUÇÃO INICIAL
+            // ===================================================================
+
+            // Chama 'renderTasks()' pela primeira vez quando a página carrega.
+            // Isso desenha a lista de tarefas que foi carregada do Local Storage.
+            renderTasks();
+        });
+    </script>
 </body>
-
 </html>
